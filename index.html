@@ -210,6 +210,26 @@
             color: #003d1f;
         }
 
+        .economia-destaque {
+            background: linear-gradient(135deg, #28a745, #20c997) !important;
+            color: white !important;
+            font-weight: bold;
+            padding: 15px !important;
+            margin-top: 10px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .economia-destaque span {
+            color: white !important;
+        }
+
+        .economia-destaque strong {
+            color: white !important;
+            font-size: 1.1rem;
+        }
+
         .table-container {
             background: #f8f9fa;
             border-radius: 15px;
@@ -246,6 +266,16 @@
 
         .results-table tr:hover {
             background: #e8f5e8;
+        }
+
+        .economia-row {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda) !important;
+            font-weight: bold;
+        }
+
+        .economia-row td {
+            color: #155724;
+            font-weight: bold;
         }
 
         .benefits-grid {
@@ -411,6 +441,10 @@
                             <span>Custo Total:</span>
                             <strong id="custoCompletoNovo">R$ 0,00</strong>
                         </div>
+                        <div class="comparison-item economia-destaque">
+                            <span>💰 Economia Atingida:</span>
+                            <strong id="economiaPercentualDestaque">0,00%</strong>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -516,6 +550,9 @@
                 document.getElementById('honorarioTotalNovo').textContent = formatarMoeda(honorarioTotalNovo);
                 document.getElementById('custoCompletoNovo').textContent = formatarMoeda(custoTotalNovo);
 
+                // Atualizar economia em destaque no cenário renegociado
+                document.getElementById('economiaPercentualDestaque').textContent = percentualEconomia.toFixed(2) + '%';
+
                 // Atualizar tabela resumo
                 const tabelaResumo = document.getElementById('tabelaResumo');
                 tabelaResumo.innerHTML = `
@@ -561,17 +598,23 @@
                         <td>${formatarMoeda(custoTotalNovo)}</td>
                         <td style="color: ${economia >= 0 ? '#28a745' : '#dc3545'}">${formatarMoeda(economia)}</td>
                     </tr>
+                    <tr class="economia-row">
+                        <td><strong>💰 ECONOMIA TOTAL (${percentualEconomia.toFixed(2)}%)</strong></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><strong>${formatarMoeda(economia)}</strong></td>
+                    </tr>
                 `;
             } else {
                 // Zerar valores se dados incompletos
                 const zeros = ['custoTotalAtual', 'custoTotalNovo', 'economiaTotal', 'percentualEconomia',
                              'jurosTotalAtual', 'honorarioTotalAtual', 'custoCompletoAtual',
-                             'jurosTotalNovo', 'honorarioTotalNovo', 'custoCompletoNovo'];
+                             'jurosTotalNovo', 'honorarioTotalNovo', 'custoCompletoNovo', 'economiaPercentualDestaque'];
                 
                 zeros.forEach(id => {
                     const element = document.getElementById(id);
                     if (element) {
-                        element.textContent = id.includes('percentual') ? '0,00%' : 'R$ 0,00';
+                        element.textContent = id.includes('percentual') || id.includes('Percentual') ? '0,00%' : 'R$ 0,00';
                     }
                 });
             }
